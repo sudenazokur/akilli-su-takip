@@ -1,145 +1,178 @@
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatelessWidget {
+import 'usage_page.dart';
+import 'card_page.dart';
+import 'profile_page.dart';
+
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
   @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+
+  int seciliIndex = 0;
+
+  final List<Widget> sayfalar = [
+
+    const HomeContent(),
+    const UsagePage(),
+    const CardPage(),
+    const ProfilePage(),
+
+  ];
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Ana Sayfa"),
+        title: const Text("Akıllı Su Takip"),
         backgroundColor: Colors.blue,
         centerTitle: true,
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: sayfalar[seciliIndex],
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      bottomNavigationBar: BottomNavigationBar(
 
-          children: [
+        currentIndex: seciliIndex,
 
-            const Text(
-              "Hoş Geldin 👋",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        onTap: (index) {
 
-            const SizedBox(height: 20),
+          setState(() {
 
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
+            seciliIndex = index;
 
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
-              ),
+          });
 
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        },
 
-                children: [
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
 
-                  Text(
-                    "Bugünkü Su Kullanımı",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  ),
+        items: const [
 
-                  SizedBox(height: 10),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Ana Sayfa",
+          ),
 
-                  Text(
-                    "245 L",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.water),
+            label: "Kullanım",
+          ),
 
-            const SizedBox(height: 30),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.credit_card),
+            label: "Kart",
+          ),
 
-            const Text(
-              "Bölgelere Göre Kullanım",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            suKarti("Mutfak", "120 L", Icons.kitchen),
-            suKarti("Banyo", "80 L", Icons.bathtub),
-            suKarti("Tuvalet", "45 L", Icons.wc),
-
-            const SizedBox(height: 20),
-
-            Container(
-              padding: const EdgeInsets.all(15),
-
-              decoration: BoxDecoration(
-                color: Colors.red.shade100,
-                borderRadius: BorderRadius.circular(15),
-              ),
-
-              child: const Row(
-                children: [
-
-                  Icon(
-                    Icons.warning,
-                    color: Colors.red,
-                  ),
-
-                  SizedBox(width: 10),
-
-                  Expanded(
-                    child: Text(
-                      "Mutfakta fazla su kullanımı tespit edildi!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profil",
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget suKarti(String alan, String litre, IconData ikon) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 15),
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
 
-      child: ListTile(
-        leading: Icon(
-          ikon,
-          color: Colors.blue,
-          size: 35,
-        ),
+  @override
+  Widget build(BuildContext context) {
 
-        title: Text(alan),
+    return Padding(
+      padding: const EdgeInsets.all(20),
 
-        trailing: Text(
-          litre,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: [
+
+          const Text(
+            "Hoş Geldin 👋",
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+
+          const SizedBox(height: 20),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Text(
+                  "Bugünkü Su Kullanımı",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+
+                SizedBox(height: 10),
+
+                Text(
+                  "245 L",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 30),
+
+          Container(
+            padding: const EdgeInsets.all(15),
+
+            decoration: BoxDecoration(
+              color: Colors.red.shade100,
+              borderRadius: BorderRadius.circular(15),
+            ),
+
+            child: const Row(
+              children: [
+
+                Icon(
+                  Icons.warning,
+                  color: Colors.red,
+                ),
+
+                SizedBox(width: 10),
+
+                Expanded(
+                  child: Text(
+                    "Mutfakta fazla su kullanımı tespit edildi!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

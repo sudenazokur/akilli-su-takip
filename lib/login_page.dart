@@ -6,6 +6,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -15,89 +16,115 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.blue,
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: SingleChildScrollView(
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-          children: [
+          child: Column(
+            children: [
 
-            const Icon(
-              Icons.water_drop,
-              size: 100,
-              color: Colors.blue,
-            ),
+              const SizedBox(height: 40),
 
-            const SizedBox(height: 20),
-
-            const Text(
-              "Giriş Yap",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+              const Icon(
+                Icons.water_drop,
+                size: 100,
+                color: Colors.blue,
               ),
-            ),
 
-            const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
-            TextField(
-              decoration: InputDecoration(
-                labelText: "E-posta",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+              const Text(
+                "Kullanıcı Girişi",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 30),
 
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: "Şifre",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-
-              child: ElevatedButton(
-
-                onPressed: () {
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DashboardPage(),
-                    ),
-                  );
-
-                },
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "İsim",
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
+              ),
 
-                child: const Text(
-                  "Giriş Yap",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+              const SizedBox(height: 20),
+
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Soyisim",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 20),
+
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "E-posta",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              TextField(
+                obscureText: true,
+
+                decoration: InputDecoration(
+                  labelText: "Şifre",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+
+                child: ElevatedButton(
+
+                  onPressed: () {
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DashboardPage(),
+                      ),
+                    );
+
+                  },
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+
+                  child: const Text(
+                    "Giriş Yap",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

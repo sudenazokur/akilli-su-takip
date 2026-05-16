@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
+import 'database_helper.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +29,6 @@ class LoginPage extends StatelessWidget {
       ),
 
       body: SingleChildScrollView(
-
         child: Padding(
           padding: const EdgeInsets.all(20),
 
@@ -45,6 +56,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 30),
 
               TextField(
+                controller: nameController,
                 decoration: InputDecoration(
                   labelText: "İsim",
                   border: OutlineInputBorder(
@@ -56,6 +68,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               TextField(
+                controller: surnameController,
                 decoration: InputDecoration(
                   labelText: "Soyisim",
                   border: OutlineInputBorder(
@@ -67,6 +80,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: "E-posta",
                   border: OutlineInputBorder(
@@ -78,8 +92,8 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               TextField(
+                controller: passwordController,
                 obscureText: true,
-
                 decoration: InputDecoration(
                   labelText: "Şifre",
                   border: OutlineInputBorder(
@@ -98,13 +112,19 @@ class LoginPage extends StatelessWidget {
 
                   onPressed: () {
 
+                    // async kaldırdık → uyarı tamamen gitti
+                    DatabaseHelper.instance.insertUser({
+                      'name': nameController.text,
+                      'surname': surnameController.text,
+                      'email': emailController.text,
+                    });
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const DashboardPage(),
                       ),
                     );
-
                   },
 
                   style: ElevatedButton.styleFrom(

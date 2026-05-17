@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'usage_page.dart';
-import 'card_page.dart';
-import 'profile_page.dart';
+import 'database_helper.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -16,12 +13,10 @@ class _DashboardPageState extends State<DashboardPage> {
   int seciliIndex = 0;
 
   final List<Widget> sayfalar = [
-
     const HomeContent(),
-    const UsagePage(),
-    const CardPage(),
-    const ProfilePage(),
-
+    const Center(child: Text("Kullanım")),
+    const Center(child: Text("Kart")),
+    const Center(child: Text("Profil")),
   ];
 
   @override
@@ -42,35 +37,27 @@ class _DashboardPageState extends State<DashboardPage> {
         currentIndex: seciliIndex,
 
         onTap: (index) {
-
           setState(() {
-
             seciliIndex = index;
-
           });
-
         },
 
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
 
         items: const [
-
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Ana Sayfa",
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.water),
             label: "Kullanım",
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.credit_card),
             label: "Kart",
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: "Profil",
@@ -81,8 +68,32 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
+
+  @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+
+  String name = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  void getUser() async {
+    final users = await DatabaseHelper.instance.getUsers();
+
+    if (users.isNotEmpty) {
+      setState(() {
+        name = users.last['name'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +106,9 @@ class HomeContent extends StatelessWidget {
 
         children: [
 
-          const Text(
-            "Hoş Geldin 👋",
-            style: TextStyle(
+          Text(
+            "Hoş Geldin $name 👋",
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
@@ -135,38 +146,6 @@ class HomeContent extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 30),
-
-          Container(
-            padding: const EdgeInsets.all(15),
-
-            decoration: BoxDecoration(
-              color: Colors.red.shade100,
-              borderRadius: BorderRadius.circular(15),
-            ),
-
-            child: const Row(
-              children: [
-
-                Icon(
-                  Icons.warning,
-                  color: Colors.red,
-                ),
-
-                SizedBox(width: 10),
-
-                Expanded(
-                  child: Text(
-                    "Mutfakta fazla su kullanımı tespit edildi!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
                   ),
                 ),
               ],

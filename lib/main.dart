@@ -2,21 +2,15 @@ import 'package:flutter/material.dart';
 import 'login_page.dart';
 
 void main() {
-  runApp(const SuTakipApp());
+  runApp(MyApp());
 }
 
-class SuTakipApp extends StatelessWidget {
-  const SuTakipApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Akıllı Su Takip',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }

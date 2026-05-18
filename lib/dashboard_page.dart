@@ -1,51 +1,46 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
-class Dashboard extends StatefulWidget {
+class DashboardPage extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardPageState createState() => _DashboardPageState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardPageState extends State<DashboardPage> {
+  int toplam = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    veriGetir();
+  }
+
+  void veriGetir() async {
+    int t = await DatabaseHelper.instance.toplamSu();
+    setState(() {
+      toplam = t;
+    });
+  }
+
+  void suEkle(int miktar) async {
+    await DatabaseHelper.instance.suEkle(miktar);
+    veriGetir();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Su Takip"),
-      ),
-
+      appBar: AppBar(title: Text("Dashboard")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            // TOPLAM SU GÖSTERME
-            FutureBuilder<int>(
-              future: DatabaseHelper.instance.toplamSu(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
-
-                return Text(
-                  "${snapshot.data} ml",
-                  style: TextStyle(fontSize: 32),
-                );
-              },
-            ),
-
-            SizedBox(height: 30),
-
-            // BUTON
+            Text("Toplam Su: $toplam ml", style: TextStyle(fontSize: 20)),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                await DatabaseHelper.instance.suEkle(250);
-                setState(() {});
-              },
+              onPressed: () => suEkle(250),
               child: Text("250 ml ekle"),
             ),
-
           ],
         ),
       ),

@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('su.db');
+    _database = await _initDB('app.db');
     return _database!;
   }
 
@@ -20,29 +20,52 @@ class DatabaseHelper {
     return await openDatabase(
       path,
       version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE su (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            miktar INTEGER
-          )
-        ''');
-      },
+      onCreate: _createDB,
     );
   }
 
-  Future<void> suEkle(int miktar) async {
-    final db = await instance.database;
-    await db.insert('su', {'miktar': miktar});
+  Future _createDB(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        password TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE water (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount INTEGER
+      )
+    ''');
   }
 
+  // 🔹 KULLANICI EKLE
+  Future<int> insertUser(String username, String password) async {
+    final db = await instance.database;
+
+    return await db.insert('users', {
+      'username': username,
+      'password': password,
+    });
+  }
+
+  // 🔹 SU EKLE
+  Future<int> suEkle(int amount) async {
+    final db = await instance.database;
+
+    return await db.insert('water', {
+      'amount': amount,
+    });
+  }
+
+  // 🔹 TOPLAM SU
   Future<int> toplamSu() async {
     final db = await instance.database;
-    final result = await db.rawQuery(
-        'SELECT SUM(miktar) as total FROM su');
 
-    return result.first['total'] == null
-        ? 0
-        : result.first['total'] as int;
+    final result = await db.rawQuery('SELECT SUM(amount) as total FROM water');
+
+    return result.first['total'] == null ? 0 : result.first['total'] as int;
   }
 }

@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('app.db');
+    _database = await _initDB('su.db');
     return _database!;
   }
 
@@ -20,30 +20,29 @@ class DatabaseHelper {
     return await openDatabase(
       path,
       version: 1,
-      onCreate: _createDB,
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE su (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            miktar INTEGER
+          )
+        ''');
+      },
     );
   }
 
-  Future _createDB(Database db, int version) async {
-    await db.execute('''
-CREATE TABLE users(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  surname TEXT,
-  email TEXT
-)
-''');
+  Future<void> suEkle(int miktar) async {
+    final db = await instance.database;
+    await db.insert('su', {'miktar': miktar});
   }
 
-  // ✅ kullanıcı ekleme
-  Future insertUser(Map<String, dynamic> row) async {
+  Future<int> toplamSu() async {
     final db = await instance.database;
-    return await db.insert('users', row);
-  }
+    final result = await db.rawQuery(
+        'SELECT SUM(miktar) as total FROM su');
 
-  // ✅ kullanıcı çekme
-  Future<List<Map<String, dynamic>>> getUsers() async {
-    final db = await instance.database;
-    return await db.query('users');
+    return result.first['total'] == null
+        ? 0
+        : result.first['total'] as int;
   }
 }

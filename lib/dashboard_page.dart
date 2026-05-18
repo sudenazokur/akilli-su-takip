@@ -1,157 +1,53 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
-
+class Dashboard extends StatefulWidget {
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
-
-  int seciliIndex = 0;
-
-  final List<Widget> sayfalar = [
-    const HomeContent(),
-    const Center(child: Text("Kullanım")),
-    const Center(child: Text("Kart")),
-    const Center(child: Text("Profil")),
-  ];
+class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
-        title: const Text("Akıllı Su Takip"),
-        backgroundColor: Colors.blue,
-        centerTitle: true,
+        title: Text("Su Takip"),
       ),
 
-      body: sayfalar[seciliIndex],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-      bottomNavigationBar: BottomNavigationBar(
+            // TOPLAM SU GÖSTERME
+            FutureBuilder<int>(
+              future: DatabaseHelper.instance.toplamSu(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
 
-        currentIndex: seciliIndex,
-
-        onTap: (index) {
-          setState(() {
-            seciliIndex = index;
-          });
-        },
-
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Ana Sayfa",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.water),
-            label: "Kullanım",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.credit_card),
-            label: "Kart",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profil",
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HomeContent extends StatefulWidget {
-  const HomeContent({super.key});
-
-  @override
-  State<HomeContent> createState() => _HomeContentState();
-}
-
-class _HomeContentState extends State<HomeContent> {
-
-  String name = "";
-
-  @override
-  void initState() {
-    super.initState();
-    getUser();
-  }
-
-  void getUser() async {
-    final users = await DatabaseHelper.instance.getUsers();
-
-    if (users.isNotEmpty) {
-      setState(() {
-        name = users.last['name'];
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.all(20),
-
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: [
-
-          Text(
-            "Hoş Geldin $name 👋",
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          const SizedBox(height: 20),
-
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
+                return Text(
+                  "${snapshot.data} ml",
+                  style: TextStyle(fontSize: 32),
+                );
+              },
             ),
 
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 30),
 
-              children: [
-
-                Text(
-                  "Bugünkü Su Kullanımı",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                Text(
-                  "245 L",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            // BUTON
+            ElevatedButton(
+              onPressed: () async {
+                await DatabaseHelper.instance.suEkle(250);
+                setState(() {});
+              },
+              child: Text("250 ml ekle"),
             ),
-          ),
-        ],
+
+          ],
+        ),
       ),
     );
   }

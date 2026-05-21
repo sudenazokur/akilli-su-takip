@@ -5,7 +5,9 @@ import 'card_page.dart';
 import 'profile_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
-  const MainNavigationPage({super.key});
+  final String currentUsername;
+
+  const MainNavigationPage({super.key, required this.currentUsername});
 
   @override
   State<MainNavigationPage> createState() => _MainNavigationPageState();
@@ -14,17 +16,17 @@ class MainNavigationPage extends StatefulWidget {
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = 0;
 
-  // Tasarımdaki 5 sekmeli yapıyı tam olarak buraya entegre ettik
-  final List<Widget> _pages = [
-    DashboardPage(), // Üzerinde const hatası kalmaması için dinamik bırakıldı
-    const UsagePage(),
-    const CardPage(),
-    const Scaffold(body: Center(child: Text("Uyarılar Çok Yakında!"))),
-    const ProfilePage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Sayfa listesindeki "const" ifadeleri temizlendi, böylece dinamik veri hatasız taşınır.
+    final List<Widget> _pages = [
+      DashboardPage(username: widget.currentUsername), 
+      const UsagePage(),
+      const CardPage(),
+      const Scaffold(body: Center(child: Text("Uyarılar Çok Yakında!"))),
+      ProfilePage(username: widget.currentUsername),
+    ];
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -34,7 +36,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
-        selectedItemColor: const Color(0xFF1D5FFF), // Tasarımdaki aktif canlı mavi renk
+        selectedItemColor: const Color(0xFF1D5FFF),
         unselectedItemColor: Colors.grey.shade400,
         showUnselectedLabels: true,
         selectedLabelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),

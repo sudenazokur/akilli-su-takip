@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  final String username;
+
+  const ProfilePage({super.key, required this.username});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  int toplamSu = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    profilVerileriniYukle();
+  }
+
+  void profilVerileriniYukle() async {
+    int t = await DatabaseHelper.instance.toplamSuTuketimi();
+    setState(() {
+      toplamSu = t;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +45,15 @@ class ProfilePage extends StatelessWidget {
               child: Icon(Icons.person, size: 60, color: Colors.white),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Ayşe Yılmaz",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+            // Giriş yapan kullanıcının adı dinamik oldu:
+            Text(
+              widget.username,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
             ),
             const SizedBox(height: 30),
-            _profilBilgiSatiri("Toplam Su Kullanımı", "12.450 L"),
-            _profilBilgiSatiri("Aylık Ortalama", "410 L"),
+            // Veritabanından gelen toplam su tüketimi bağlandı:
+            _profilBilgiSatiri("Toplam Su Kullanımı", "$toplamSu L"),
+            _profilBilgiSatiri("Aylık Ortalama", "${(toplamSu / 30).toStringAsFixed(1)} L"),
             _profilBilgiSatiri("Kayıtlı Kart Sayısı", "1"),
           ],
         ),
@@ -42,7 +67,7 @@ class ProfilePage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // DÜZELTİLDİ
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
           Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  final String username;
+
+  const DashboardPage({super.key, required this.username});
 
   @override
   _DashboardPageState createState() => _DashboardPageState();
@@ -46,9 +48,9 @@ class _DashboardPageState extends State<DashboardPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Hoş geldin, Ayşe Yılmaz",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                  Text(
+                    "Hoş geldin, ${widget.username}",
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
                   ),
                   IconButton(
                     icon: const Icon(Icons.notifications_none_outlined, color: Colors.black),
@@ -56,25 +58,36 @@ class _DashboardPageState extends State<DashboardPage> {
                   )
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1D5FFF),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF1D5FFF), Color(0xFF538DFF)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1D5FFF).withOpacity(0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start, // DÜZELTİLDİ
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           "Bugünkü Toplam\nSu Kullanımı", 
-                          style: TextStyle(color: Colors.white70, fontSize: 15),
+                          style: TextStyle(color: Colors.white70, fontSize: 15, height: 1.3), // whiteB7 hatası düzeltildi!
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
@@ -83,13 +96,13 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                           child: const Text(
                             "Hedef: 300 L", 
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                         )
                       ],
                     ),
                     Text(
-                      "$toplamSu L", 
+                      "$toplamSu L",
                       style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -110,15 +123,21 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _miniKategoriKarti("Mutfak", "$mutfak L", Icons.kitchen_outlined),
-                  _miniKategoriKarti("Banyo", "$banyo L", Icons.bathtub_outlined),
-                  _miniKategoriKarti("Tuvalet", "$tuvalet L", Icons.wc_outlined),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _miniKategoriKarti("Mutfak", "$mutfak L", Icons.kitchen_outlined),
+                    const SizedBox(width: 10),
+                    _miniKategoriKarti("Banyo", "$banyo L", Icons.bathtub_outlined),
+                    const SizedBox(width: 10),
+                    _miniKategoriKarti("Tuvalet", "$tuvalet L", Icons.wc_outlined),
+                    const SizedBox(width: 10),
+                    _miniKategoriKarti("Diğer", "20 L", Icons.opacity_rounded),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(color: const Color(0xFFFEF2F2), borderRadius: BorderRadius.circular(16)),
@@ -154,7 +173,11 @@ class _DashboardPageState extends State<DashboardPage> {
               Container(
                 height: 150,
                 padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                  color: Colors.white, 
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade100),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -180,7 +203,11 @@ class _DashboardPageState extends State<DashboardPage> {
     return Container(
       width: 105,
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white, 
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade100),
+      ),
       child: Column(
         children: [
           Icon(icon, color: const Color(0xFF1D5FFF), size: 28),
@@ -199,7 +226,10 @@ class _DashboardPageState extends State<DashboardPage> {
         Container(
           height: yukseklik,
           width: 14,
-          decoration: BoxDecoration(color: const Color(0xFF38BDF8), borderRadius: BorderRadius.circular(4)),
+          decoration: BoxDecoration(
+            color: const Color(0xFF38BDF8), 
+            borderRadius: BorderRadius.circular(4),
+          ),
         ),
         const SizedBox(height: 8),
         Text(gun, style: const TextStyle(fontSize: 10, color: Colors.grey)),

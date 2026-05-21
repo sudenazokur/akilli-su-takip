@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         primaryColor: const Color(0xFF1D5FFF),
       ),
-      home: const LoginPage(),
+      home: const LoginPage(), // İlk açılışta güvenle login sayfasına gider
     );
   }
 }

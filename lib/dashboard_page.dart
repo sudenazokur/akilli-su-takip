@@ -39,12 +39,14 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade50, // Arka planı daha temiz bir gri yaptık
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Üst Kullanıcı Karşılama Alanı
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -59,6 +61,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
               const SizedBox(height: 20),
+
+              // Büyük Toplam Su Kullanım Kartı
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -85,7 +89,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       children: [
                         const Text(
                           "Bugünkü Toplam\nSu Kullanımı", 
-                          style: TextStyle(color: Colors.white70, fontSize: 15, height: 1.3), // whiteB7 hatası düzeltildi!
+                          style: TextStyle(color: Colors.white70, fontSize: 15, height: 1.3),
                         ),
                         const SizedBox(height: 12),
                         Container(
@@ -109,6 +113,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               const SizedBox(height: 25),
+
+              // Hızlı Bakış Başlığı
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -123,6 +129,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
               const SizedBox(height: 10),
+
+              // Yatay Kategori Listesi
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -138,6 +146,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               const SizedBox(height: 25),
+
+              // Kritik Aşım Uyarı Kartı
               Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(color: const Color(0xFFFEF2F2), borderRadius: BorderRadius.circular(16)),
@@ -165,13 +175,17 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               const SizedBox(height: 25),
+
+              // Haftalık Kullanım Grafik Alanı
               const Text(
                 "Haftalık Kullanım", 
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
               ),
               const SizedBox(height: 15),
+              
+              // TAŞMA HATASINI ÖNLEMEK İÇİN YÜKSEKLİK 200 YAPILDI
               Container(
-                height: 150,
+                height: 200, 
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   color: Colors.white, 
@@ -191,7 +205,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     _grafikCubugu("Paz", 130),
                   ],
                 ),
-              )
+              ),
+              const SizedBox(height: 20), // Alt kısımdaki boşluk payı
             ],
           ),
         ),
@@ -199,6 +214,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  // Kategori Listesini Oluşturan Küçük Kart Şablonu
   Widget _miniKategoriKarti(String title, String amount, IconData icon) {
     return Container(
       width: 105,
@@ -219,20 +235,24 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  // TAŞMAYI ÖNLEYECEK ŞEKİLDE YENİDEN AYARLANAN GRAFİK ÇUBUĞU ŞABLONU
   Widget _grafikCubugu(String gun, double yukseklik) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
           height: yukseklik,
-          width: 14,
+          width: 12, 
           decoration: BoxDecoration(
             color: const Color(0xFF38BDF8), 
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(6),
           ),
         ),
-        const SizedBox(height: 8),
-        Text(gun, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+        const SizedBox(height: 6), 
+        Text(
+          gun, 
+          style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.w500),
+        ),
       ],
     );
   }
